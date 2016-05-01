@@ -1,0 +1,60 @@
+Compile the source files with the following commands:
+
+g++ TCcalcJacobi.cpp -std=c++0x -o TCcalcJacobi
+nvcc TCcalcJacobiParallel.cu -std=c++11 -o TCcalcJacobiParallel
+g++ TCgenPos.cpp -o TCgenPos -std=c++0x
+g++ TCcheckPos.cpp -o TCcheckPos
+
+Note: 
+In order to compile TCcalcJacobiParallel.cu, the machine needs a CUDA capable GPU, aswell as the CUDA driver and compiler installed. If PATH for nvcc is not set, use the full path in the command (default: /usr/local/cuda-7.5/bin/nvcc)
+
+Use -DUSE_GSEIDEL macro, if TCcalcJacobi should use the Gauss-Seidel method. If left off TCcalcJacobi will use the Jacobi method
+
+Run with the following commands:
+
+./TCgenPos eq ans 
+or
+./TCgenPos eq ans NREQUATIONS
+
+Generates an equation system, stored in the file eq, with the answers stored in ans. If NREQUATIONS is set, it is interpreted as the number of equations the system should have. If it is not set, the number of equations is random
+
+./TCcalcJacobi eq
+or 
+./TCcalcJacobiParallel eq
+
+Solves the equation system stored in eq and prints the answers to stdout
+
+./TCcalcJacobi eq | ./TCcheck ans
+or 
+./TCcalcJacobiParallel eq | ./TCcheck ans
+
+Solves the equation system and pipes the answers to TCcheck, which controls their correctnesss by checking the output of the solver against the lines in the ans file. If there is a string missmatch, an error message will be printed. If everything is correct, nothing will be printed.
+
+eq10K and ans10K is a predefined equation system with 10000 equations and answers respectively that can be used to test on. 
+
+For testing: 
+Compile 
+- TCcalcJacobi.cpp
+- TCcalcJacobiParallel.cpp
+- TCcheckPos.cpp
+- TCgenPos.cpp
+
+Run:
+
+- testJacobi.sh for testing the Jacobi solver
+- testJacobiParallel.sh for the parallel Jacobi solver
+
+These shell-scripts run 1000 randomly generated equation systems, and compare the output of TCcalcJacobi and TCcalcJacobiParallel against the known answers to the system. If there is a mismatch between the strings, the loop breaks and an error message prints. If everything goes well, nothing will print
+
+For time testing: 
+
+Genmerate an equation system of 1000 - 20000 equations (the difference between the GPU and sequential algorithm increases as the number of equations increases. The performance is about equal on my system at about 750 equations. Lower than that, the sequential implementation is faster). 
+
+Then run: 
+
+time ./TCcalcJacobi eq
+or 
+time ./TCcalcJacobiParallel eq
+
+To get the execution time. Testing on 10000 equations, the execution time is about 6.7 seconds for the sequential implementation, and 0.58 seconds for the parallel implementation on my system
+

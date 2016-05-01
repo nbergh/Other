@@ -1,0 +1,36 @@
+TCcalc is a general linear equation system solver, that can solve systems where the variables can be negative and non-integers. It can also detect whether the system is  solvable or not. It works similar to matlabs x = A\b
+
+Compile the source files with the following commands:
+
+g++ TCcalc.cpp -std=c++0x -o TCcalc
+g++ TCgen.cpp -o TCgen
+g++ TCcheck.cpp -std=c++0x -o TCcheck
+
+Run with the following commands:
+
+./TCgen eq 
+
+Generates an equation system, stored in the file eq, with the answers stored in ans.
+
+./TCcalc eq
+
+Solves the equation system stored in eq and prints the answers to stdout
+
+./TCcalc eq | ./TCcheck eq
+
+Solves the equation system and pipes the answers to TCcheck, which controls their correctnesss by inserting the variable values in the eqauation system and check if it is equal on both sides of the equal sign. If it isn't, an error message will be printed. If everything is correct, nothing will be printed.
+
+For testing: 
+
+Compile 
+- TCcalc.cpp
+- TCcheck.cpp
+- TCgen.cpp
+
+Run:
+
+- test.sh
+
+The shell-scripts run 1000 randomly generated equation systems, and compare the output of TCcalc against the system. If there is a mismatch between the strings, the loop breaks and an error message prints. If everything goes well, nothing will print
+
+
