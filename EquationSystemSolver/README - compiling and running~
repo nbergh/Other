@@ -1,9 +1,0 @@
-Compile the source files with the following commands:
-
-g++ TCcalcJacobi.cpp -std=c++0x -o TCcalcJacobi
-nvcc TCcalcJacobiParallel.cu -std=c++11 -o TCcalcJacobiParallel
-g++ TCgenPos.cpp -o TCgenPos
-g++ TCcheckPos.cpp -o TCcheckPos
-
-Note: 
-In order to compile TCcalcJacobiParallel.cu, the machine needs a CUDA capable GPU, aswell as the CUDA driver and compiler installed
